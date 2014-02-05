@@ -1,0 +1,183 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Archives: 2014/2 | CodeMiss</title>
+  <meta name="author" content="codemiss">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+  <meta property="og:site_name" content="CodeMiss"/>
+
+  
+    <meta property="og:image" content="undefined"/>
+  
+
+  <link href="/favicon.png" rel="icon">
+  <link rel="alternate" href="/atom.xml" title="CodeMiss" type="application/atom+xml">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  
+</head>
+
+
+<body>
+  <header id="header" class="inner"><div class="alignleft">
+  <h1><a href="/">CodeMiss</a></h1>
+  <h2><a href="/">Code Make It Simple Sexy</a></h2>
+</div>
+<nav id="main-nav" class="alignright">
+  <ul>
+    
+      <li><a href="/">Home</a></li>
+    
+      <li><a href="/archives">Archives</a></li>
+    
+      <li><a href="/about">About</a></li>
+    
+  </ul>
+  <div class="clearfix"></div>
+</nav>
+<div class="clearfix"></div></header>
+  <div id="content" class="inner">
+    <div id="main-col" class="alignleft"><div id="wrapper">
+<h2 class="archive-title">2014/2</h2>
+
+
+  
+    <article class="post">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2014-02-05T07:20:26.000Z"><a href="/2014/02/05/summary-of-using-python/">Feb 5 2014</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2014/02/05/summary-of-using-python/">Summary-of-Using-Python</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <h1>Should you always favor xrange() over range()</h1>
+<p>For performance, especially when you&#39;re iterating over a large range, xrange() is usually better.</p>
+<figure class="highlight lang-bash"><table><tr><td class="gutter"><pre>1
+2
+3
+4
+</pre></td><td class="code"><pre>$ python -m timeit <span class="string">'for i in range(1000000):'</span> <span class="string">' pass'</span>
+10 loops, best of 3: 90.5 msec per loop
+$ python -m timeit <span class="string">'for i in xrange(1000000):'</span> <span class="string">' pass'</span>
+10 loops, best of 3: 51.1 msec per loop
+</pre></td></tr></table></figure>
+
+<p>However, there are still a few cases why you might prefer range():</p>
+<ul>
+<li><p>In python 3, range() is a generator anyway and xrange does not exist. Using range() may make your Python 2.x code <strong>more portable going forward</strong>. </p>
+</li>
+<li><p>range() can actually be faster in some cases - eg. if iterating over the same sequence multiple times. xrange has to reconstruct the integer object every time, but range will have real integer objects. (It will always perform worse in terms of memory however) xrange returns an iterator and only keeps one number in memory at a time. range keeps the entire list of numbers in memory.</p>
+</li>
+<li><p>xrange isn‘t usable in all cases where a real list is needed. For instance, it doesn’t support slices, or any list methods.If you want get the range() list in python 3, you should write like this </p>
+<figure class="highlight lang-python"><table><tr><td class="gutter"><pre>1
+</pre></td><td class="code"><pre>list(range(<span class="number">1</span>,<span class="number">100</span>))
+</pre></td></tr></table></figure>
+
+</li>
+</ul>
+<h1>Why use lambda functions?</h1>
+<p>lambda is one of the requisites for a readable functional language.</p>
+<figure class="highlight lang-python"><table><tr><td class="gutter"><pre>1
+</pre></td><td class="code"><pre>f = <span class="keyword">lambda</span> x: x**<span class="number">2</span> + <span class="number">2</span>*x - <span class="number">5</span>
+</pre></td></tr></table></figure>
+
+<p>Those things are actually quite useful. Python supports a style of programming called functional programming where you can pass functions to other functions to do stuff. Example:<br>mult3 = filter(lambda x: x % 3 == 0, [1, 2, 3, 4, 5, 6, 7, 8, 9])<br>sets mult3 to [3, 6, 9], those elements of the original list that are multiples of 3. This is shorter than</p>
+<figure class="highlight lang-python"><table><tr><td class="gutter"><pre>1
+2
+</pre></td><td class="code"><pre><span class="function"><span class="keyword">def</span> <span class="title">filterfunc</span><span class="params">(x)</span>:</span>
+    <span class="keyword">return</span> x % <span class="number">3</span> == <span class="number">0</span>
+</pre></td></tr></table></figure>
+
+<p>mult3 = filter(filterfunc, [1, 2, 3, 4, 5, 6, 7, 8, 9])<br>Of course, in this particular case, you could do the same thing as a list comprehension:<br>mult3 = [x for x in [1, 2, 3, 4, 5, 6, 7, 8, 9] if x % 3 == 0]<br>(or even as range(3,10,3)) but there are other cases, like constructing functions as return values from other functions, where you can&#39;t use a list comprehension and a lambda function may be the shortest way to write something out. Like</p>
+<figure class="highlight lang-python"><table><tr><td class="gutter"><pre>1
+2
+3
+4
+</pre></td><td class="code"><pre><span class="function"><span class="keyword">def</span> <span class="title">transform</span><span class="params">(n)</span>:</span>
+    <span class="keyword">return</span> <span class="keyword">lambda</span> x: x + n
+f = transform(<span class="number">3</span>)
+f(<span class="number">4</span>) <span class="comment"># is 7</span>
+</pre></td></tr></table></figure>
+
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+  
+
+  <nav id="pagination">
+  
+  
+  <div class="clearfix"></div>
+</nav>
+</div></div>
+    <aside id="sidebar" class="alignright">
+  <div class="search">
+  <form action="//google.com/search" method="get" accept-charset="utf-8">
+    <input type="search" name="q" results="0" placeholder="Search">
+    <input type="hidden" name="q" value="site:yoursite.com">
+  </form>
+</div>
+
+  
+
+  
+<div class="widget tag">
+  <h3 class="title">Tags</h3>
+  <ul class="entry">
+  
+    <li><a href="/tags/python/">python</a><small>2</small></li>
+  
+  </ul>
+</div>
+
+</aside>
+    <div class="clearfix"></div>
+  </div>
+  <footer id="footer" class="inner"><div class="alignleft">
+  
+  &copy; 2014 codemiss
+  
+</div>
+<div class="clearfix"></div></footer>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>
+
+</body>
+</html>
